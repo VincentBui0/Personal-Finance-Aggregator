@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/financedb
+    username: postgres
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: true
+  threads:
+    virtual:
+      enabled: true
+
+app:
+  jwt:
+    secret: your-256-bit-secret-here
+    expiration-ms: 86400000
+  plaid:
+    client-id: placeholder
+    secret: placeholder
+    environment: sandbox
