@@ -39,18 +39,22 @@ public class PlaidService {
         this.transactionRepository = transactionRepository;
     }
 
-    public String createLinkToken(String userId) throws IOException {
-        LinkTokenCreateRequest req = new LinkTokenCreateRequest()
-                .clientId(clientId)
-                .secret(secret)
-                .clientName("Finance App")
-                .user(new LinkTokenCreateRequestUser().clientUserId(userId))
-                .products(List.of(Products.TRANSACTIONS))
-                .countryCodes(List.of(CountryCode.US))
-                .language("en");
-        Response<LinkTokenCreateResponse> resp = plaidClient.linkTokenCreate(req).execute();
-        return resp.body().getLinkToken();
+public String createLinkToken(String userId) throws IOException {
+    LinkTokenCreateRequest req = new LinkTokenCreateRequest()
+            .clientId(clientId)
+            .secret(secret)
+            .clientName("Finance App")
+            .user(new LinkTokenCreateRequestUser().clientUserId(userId))
+            .products(List.of(Products.TRANSACTIONS))
+            .countryCodes(List.of(CountryCode.US))
+            .language("en");
+    Response<LinkTokenCreateResponse> resp = plaidClient.linkTokenCreate(req).execute();
+    if (!resp.isSuccessful()) {
+        String errorBody = resp.errorBody() != null ? resp.errorBody().string() : "unknown";
+        throw new IOException("Plaid error " + resp.code() + ": " + errorBody);
     }
+    return resp.body().getLinkToken();
+}
 
     public PlaidItem exchangePublicToken(String publicToken, User user) throws IOException {
         ItemPublicTokenExchangeRequest req = new ItemPublicTokenExchangeRequest()

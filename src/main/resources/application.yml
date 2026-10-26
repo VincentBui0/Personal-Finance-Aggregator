@@ -18,8 +18,8 @@ app:
     secret: your-super-secret-key-that-is-at-least-32-characters-long
     expiration-ms: 86400000
   plaid:
-    client-id: placeholder
-    secret: placeholder
+    client-id: 6add4e7b8a61b5000d02a246
+    secret: 72547960b05fb0cb412814088b1cd2
     environment: sandbox
 
 logging:
