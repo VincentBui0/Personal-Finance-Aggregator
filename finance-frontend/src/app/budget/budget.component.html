@@ -1,1 +1,44 @@
-<p>budget works!</p>
+<div class="budget-page">
+  <header class="page-header">
+    <a routerLink="/dashboard">← Dashboard</a>
+    <h1>Budgets</h1>
+    <button (click)="showForm = !showForm">
+      {{ showForm ? 'Cancel' : '+ Add Budget' }}
+    </button>
+  </header>
+
+  <div class="add-form" *ngIf="showForm">
+    <select [(ngModel)]="newCategory">
+      <option value="">Select category</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+    <input type="number" placeholder="Amount" [(ngModel)]="newAmount" min="0" />
+    <input type="month" [(ngModel)]="newMonth" />
+    <button (click)="save()">Save</button>
+  </div>
+
+  <div *ngIf="loading">Loading...</div>
+
+  <div *ngIf="!loading && budgets.length === 0" class="empty">
+    No budgets yet. Add one to start tracking your spending.
+  </div>
+
+  <table *ngIf="!loading && budgets.length > 0">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Month</th>
+        <th>Budget</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let b of budgets">
+        <td>{{ b.category }}</td>
+        <td>{{ formatMonth(b.month) }}</td>
+        <td>${{ b.amount }}</td>
+        <td><button class="delete-btn" (click)="delete(b.id)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
